@@ -133,16 +133,6 @@ router.get('/cats', function(req, res, next) {
   });
 });
 
-router.get('/cat', function(req, res, next) {
-  db.query('SELECT * FROM cat', function(err, results, query) {
-    if (err) throw err;
-    
-    if(results.length > 0) {
-      return res.status(200).json(results);
-    }
-  });
-});
-
 router.get('/cats/random', function(req, res, next) {
   db.query('SELECT imageUrl, name, breed FROM cat ORDER BY RAND() LIMIT 1', function(err, results, query) {
     if (err){
