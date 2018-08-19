@@ -51,8 +51,7 @@ router.post('/cat/register', [
 
         res.sendStatus(200);
       });
-    }
-    else{
+    } else{
       res.status(200).json({"Error": "Username already exists. Please choose a different username."});
     }
   });
@@ -65,6 +64,21 @@ router.get('/cat', function(req, res, next) {
     
     if(results.length > 0) {
       res.status(200).json(results);
+    }
+  });
+});
+
+router.get('/cats/random', function(req, res, next) {
+  db.query('SELECT imageUrl, name, breed FROM cat ORDER BY RAND() LIMIT 1', function(err, results, query) {
+    if (err){
+      console.log(err);
+      res.status(500).json({"Error": "Unexpected error occured. Please try again in a while"});
+    }
+    
+    if(results.length > 0) {
+      res.status(200).json(results);
+    } else{
+      res.status(200).json({"Error": "No records found."});
     }
   });
 });
