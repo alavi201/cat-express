@@ -3,6 +3,8 @@ var router = express.Router();
 var db = require('../db');
 var crypto = require('crypto');
 const { check, validationResult } = require('express-validator/check');
+var jwt = require('jsonwebtoken');
+var config= require('../config.json');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -31,7 +33,7 @@ router.post('/cat/register', [
   db.query('SELECT id FROM cat WHERE username = ? ', [username], function(err, results, query) {
     if (err){
       console.log(error);
-      res.status(500).json({"Error": "Unexpected error occured. Please try again in a while"});
+      return res.status(500).json({"Error": "Unexpected error occured. Please try again in a while"});
     }
     
     if(results.length == 0) {
@@ -48,13 +50,13 @@ router.post('/cat/register', [
       db.query('INSERT INTO cat SET ?', post, function(err, result) {
         if (err){
           console.log(err);
-          res.status(500).json({"Error": "Unexpected error occured. Please try again in a while"});
+          return res.status(500).json({"Error": "Unexpected error occured. Please try again in a while"});
         }
 
-        res.sendStatus(200);
+        return res.sendStatus(200);
       });
     } else{
-      res.status(200).json({"Error": "Username already exists. Please choose a different username."});
+      return res.status(200).json({"Error": "Username already exists. Please choose a different username."});
     }
   });
 });
@@ -67,18 +69,22 @@ router.post('/cat/login', function(req, res, next) {
   db.query('SELECT id, password from cat where username = ?', [username], function(err, results, query) {
     if (err){
       console.log(err);
-      res.status(500).json({"Error": "Unexpected error occured. Please try again in a while"});
+      return res.status(500).json({"Error": "Unexpected error occured. Please try again in a while"});
     }
     
     if(results.length > 0) {
       if(results[0].password == password){
         db.query('UPDATE cat set lastSeenAt = NOW() where id = ?', [results[0].id]);
-        res.status(200).json({"authToken": "A^WFIAUFNAKK"});
+        // create a token
+        var token = jwt.sign({ id: results[0].id }, config.secret, {
+          expiresIn: 600 // expires in 10 minutes
+        });
+        return res.status(200).json({"authToken": token});
       } else{
-        res.status(200).json({"Error": "Incorrect password."});
+        return res.status(200).json({"Error": "Incorrect password."});
       }
     } else{
-      res.status(200).json({"Error": "Username not found."});
+      return res.status(200).json({"Error": "Username not found."});
     }
   });
 });
@@ -88,27 +94,42 @@ router.get('/cats', function(req, res, next) {
   var authToken = req.header('authToken');
   console.log(authToken);
 
-  var sql = "SELECT id, username, name, birthdate, breed, imageUrl from cat ";
-  const existingParams = ["id", "name", "username"].filter(field => req.query[field]);
+  if (!authToken){
+    return res.status(401).json({"Error": "No token provided."});
+  };
 
-  if (existingParams.length) {
-      sql += " WHERE ";
-      sql += existingParams.map(field => `${field} = ?`).join(" AND ");
-  }
-
-  sql += " ORDER BY lastSeenAt";
-
-  db.query(sql, existingParams.map(field => req.query[field]), function(err, results, query) {
+  jwt.verify(authToken, config.secret, function(err, decoded) {
     if (err){
       console.log(err);
-      res.status(500).json({"Error": "Unexpected error occured. Please try again in a while"});
+      var message = "Failed to authenticate";
+      if(err.name == "TokenExpiredError"){
+        message = " This token has expired, please get a new token by logging in.";
+      }
+      return res.status(500).json({"Error": message});
     }
-    
-    if(results.length > 0) {
-        res.status(200).json(results);
-    } else{
-      res.status(200).json({"Error": "Invalid search criteria"});
+
+    var sql = "SELECT id, username, name, birthdate, breed, imageUrl from cat ";
+    const existingParams = ["id", "name", "username"].filter(field => req.query[field]);
+
+    if (existingParams.length) {
+        sql += " WHERE ";
+        sql += existingParams.map(field => `${field} = ?`).join(" AND ");
     }
+
+    sql += " ORDER BY lastSeenAt";
+
+    db.query(sql, existingParams.map(field => req.query[field]), function(err, results, query) {
+      if (err){
+        console.log(err);
+        return res.status(500).json({"Error": "Unexpected error occured. Please try again in a while"});
+      }
+      
+      if(results.length > 0) {
+        return res.status(200).json(results);
+      } else{
+        return res.status(200).json({"Error": "Invalid search criteria"});
+      }
+    });
   });
 });
 
@@ -117,7 +138,7 @@ router.get('/cat', function(req, res, next) {
     if (err) throw err;
     
     if(results.length > 0) {
-      res.status(200).json(results);
+      return res.status(200).json(results);
     }
   });
 });
@@ -126,13 +147,13 @@ router.get('/cats/random', function(req, res, next) {
   db.query('SELECT imageUrl, name, breed FROM cat ORDER BY RAND() LIMIT 1', function(err, results, query) {
     if (err){
       console.log(err);
-      res.status(500).json({"Error": "Unexpected error occured. Please try again in a while"});
+      return res.status(500).json({"Error": "Unexpected error occured. Please try again in a while"});
     }
     
     if(results.length > 0) {
-      res.status(200).json(results);
+      return res.status(200).json(results);
     } else{
-      res.status(200).json({"Error": "No records found."});
+      return res.status(200).json({"Error": "No records found."});
     }
   });
 });

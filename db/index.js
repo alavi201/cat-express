@@ -1,10 +1,10 @@
 var mysql = require('mysql');
-var settings = require('../config.json');
+var config = require('../config.json');
 var db;
 
 function connectDatabase() {
     if (!db) {
-        db = mysql.createConnection(settings);
+        db = mysql.createConnection(config);
 
         db.connect(function(err){
             if(!err) {
