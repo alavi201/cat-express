@@ -37,10 +37,10 @@ router.post('/cat/register', [
       var post  = {
         name: req.body.name,
         username: username,
-        password: crypto.createHash('md5').update(req.body.username).digest("hex"),
+        password: crypto.createHash('md5').update(req.body.password).digest("hex"),
         breed: req.body.breed,
         weight: req.body.weight,
-        imageUrl: req.body.username,
+        imageUrl: req.body.imageUrl,
       };
       
       db.query('INSERT INTO cat SET ?', post, function(err, result) {
@@ -57,6 +57,28 @@ router.post('/cat/register', [
   });
 });
 
+router.post('/cat/login', function(req, res, next) {
+
+  var username = req.body.username;
+  var password = crypto.createHash('md5').update(req.body.password).digest("hex");
+
+  db.query('SELECT password from cat where username = ?', [username], function(err, results, query) {
+    if (err){
+      console.log(err);
+      res.status(500).json({"Error": "Unexpected error occured. Please try again in a while"});
+    }
+    
+    if(results.length > 0) {
+      if(results[0].password == password){
+        res.status(200).json({"authToken": "A^WFIAUFNAKK"});
+      } else{
+        res.status(200).json({"Error": "Incorrect password."});
+      }
+    } else{
+      res.status(200).json({"Error": "Username not found."});
+    }
+  });
+});
 
 router.get('/cat', function(req, res, next) {
   db.query('SELECT * FROM cat', function(err, results, query) {
