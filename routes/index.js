@@ -18,6 +18,7 @@ router.post('/cat/register', [
   check('weight').isNumeric(),
   check('breed').optional().isAlpha(),
   check('imageUrl').optional().isURL(),
+  check('birthdate').optional().isISO8601()
 ], function(req, res, next) {
 
   const errors = validationResult(req);
@@ -41,6 +42,7 @@ router.post('/cat/register', [
         breed: req.body.breed,
         weight: req.body.weight,
         imageUrl: req.body.imageUrl,
+        birthdate: req.body.birthdate,
       };
       
       db.query('INSERT INTO cat SET ?', post, function(err, result) {
@@ -62,7 +64,7 @@ router.post('/cat/login', function(req, res, next) {
   var username = req.body.username;
   var password = crypto.createHash('md5').update(req.body.password).digest("hex");
 
-  db.query('SELECT password from cat where username = ?', [username], function(err, results, query) {
+  db.query('SELECT id, password from cat where username = ?', [username], function(err, results, query) {
     if (err){
       console.log(err);
       res.status(500).json({"Error": "Unexpected error occured. Please try again in a while"});
@@ -70,12 +72,42 @@ router.post('/cat/login', function(req, res, next) {
     
     if(results.length > 0) {
       if(results[0].password == password){
+        db.query('UPDATE cat set lastSeenAt = NOW() where id = ?', [results[0].id]);
         res.status(200).json({"authToken": "A^WFIAUFNAKK"});
       } else{
         res.status(200).json({"Error": "Incorrect password."});
       }
     } else{
       res.status(200).json({"Error": "Username not found."});
+    }
+  });
+});
+
+router.get('/cats', function(req, res, next) {
+
+  var authToken = req.header('authToken');
+  console.log(authToken);
+
+  var sql = "SELECT id, username, name, birthdate, breed, imageUrl from cat ";
+  const existingParams = ["id", "name", "username"].filter(field => req.query[field]);
+
+  if (existingParams.length) {
+      sql += " WHERE ";
+      sql += existingParams.map(field => `${field} = ?`).join(" AND ");
+  }
+
+  sql += " ORDER BY lastSeenAt";
+
+  db.query(sql, existingParams.map(field => req.query[field]), function(err, results, query) {
+    if (err){
+      console.log(err);
+      res.status(500).json({"Error": "Unexpected error occured. Please try again in a while"});
+    }
+    
+    if(results.length > 0) {
+        res.status(200).json(results);
+    } else{
+      res.status(200).json({"Error": "Invalid search criteria"});
     }
   });
 });
