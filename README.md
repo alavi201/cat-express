@@ -84,23 +84,47 @@ Example: http://example.com/cat/register
         }
 
 
-### GET /magazines/[id]
+### POST /cat/login
 
-Example: http://example.gov/api/v1/magazines/[id].json
+*  **Data Params**
 
-Response body:
+   **Required:**
+    ` username: String`
+    ` password: String`
 
-    {
-        "id": "1234",
-        "type": "magazine",
-        "title": "Public Water Systems",
-        "tags": [
-            {"id": "125", "name": "Environment"},
-            {"id": "834", "name": "Water Quality"}
-        ],
-        "created": "1231621302"
-    }
+Example: http://example.com/cat/login
 
+* **Success Response:**
+
+  * **Code:** 200 <br />
+      
+    Response body:
+
+        {
+            "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNTM0NzE3OTkyLCJleHAiOjE1MzQ3MTgwNTJ9.UzArVBKDsC-OIkKcI1w9dCZHwkQ4LSAfLEciYtOec5w"
+        }
+
+ 
+* **Error Response:**
+
+  * **Code:** 422 UNPROCESSABLE ENTRY <br />
+    
+    Response body:
+
+        {
+            "error": "Username not found."
+        }
+
+      OR
+
+  * **Code:** 400 BAD REQUEST <br />
+
+    Response body:
+
+
+        {
+            "error": "Incorrect password."
+        }
 
 
 ### POST /magazines/[id]/articles
