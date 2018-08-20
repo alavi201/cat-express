@@ -32,52 +32,57 @@ Major resource components supported by the API are:
   - [GET /cats](#get-magazinesid)
   - [POST /magazines/[id]/articles](#post-magazinesidarticles)
 
-### GET /magazines
+### POST /cat/register
 
-Example: http://example.gov/api/v1/magazines.json
+*  **Data Params**
 
+   **Required:**
+    ` name: String`
+    ` password: String`
+    ` username: String`
+    ` weight: Float`
+    
+   **Optional:**
+    ` birthdate: Date`
+    ` breed: String`
+    ` imageUrl: String`
+
+Example: http://example.com/cat/register
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+ 
+* **Error Response:**
+
+  * **Code:** 422 UNPROCESSABLE ENTRY <br />
+    
 Response body:
 
     {
-        "metadata": {
-            "resultset": {
-                "count": 123,
-                "offset": 0,
-                "limit": 10
-            }
-        },
-        "results": [
+        "errors": [
             {
-                "id": "1234",
-                "type": "magazine",
-                "title": "Public Water Systems",
-                "tags": [
-                    {"id": "125", "name": "Environment"},
-                    {"id": "834", "name": "Water Quality"}
-                ],
-                "created": "1231621302"
-            },
-            {
-                "id": 2351,
-                "type": "magazine",
-                "title": "Public Schools",
-                "tags": [
-                    {"id": "125", "name": "Elementary"},
-                    {"id": "834", "name": "Charter Schools"}
-                ],
-                "created": "126251302"
-            }
-            {
-                "id": 2351,
-                "type": "magazine",
-                "title": "Public Schools",
-                "tags": [
-                    {"id": "125", "name": "Pre-school"},
-                ],
-                "created": "126251302"
+                "location": "body",
+                "param": "password",
+                "value": "1234",
+                "msg": "Minimum length is 8"
             }
         ]
     }
+
+
+
+  OR
+
+  * **Code:** 400 BAD REQUEST <br />
+    
+Response body:
+
+
+    {
+        "error": "Username already exists. Please choose a different username."
+    }
+
 
 ### GET /magazines/[id]
 
