@@ -111,7 +111,7 @@ router.get('/cats', function(req, res, next) {
       if(err.name == "TokenExpiredError"){
         message = " This token has expired, please get a new token by logging in.";
       }
-      return res.status(500).json({"Error": message});
+      return res.status(400).json({"Error": message});
     }
 
     var sql = 'SELECT id, username, name, birthdate, breed, imageUrl from cat ';
