@@ -258,6 +258,10 @@ Example: http://example.com/cats/random
 
 * **Ali Alavi** - *Initial work*
 
+## Possible Improvements
+
+ *Move DB queries to a helper file*
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
