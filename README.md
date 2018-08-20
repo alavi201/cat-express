@@ -33,7 +33,7 @@ Major resource components supported by the API are:
   - [POST /cat/register](#post-catregister)
   - [POST /cat/login](#post-catlogin)
   - [GET /cats](#get-cats)
-  - [POST /cats/random](#get-catsrandom)
+  - [GET /cats/random](#get-catsrandom)
 
 | resource      | description                       |
 |:--------------|:----------------------------------|
