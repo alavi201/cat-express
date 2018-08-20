@@ -27,10 +27,10 @@ Major resource components supported by the API are:
 
 ### API Resources
 
-  - [POST /cat/register](#get-magazines)
-  - [POST /cat/login](#get-magazinesid)
-  - [GET /cats](#get-magazinesid)
-  - [POST /magazines/[id]/articles](#post-magazinesidarticles)
+  - [POST /cat/register](#post-catregister)
+  - [POST /cat/login](#post-catlogin)
+  - [GET /cats](#get-cats)
+  - [POST /cats/random](#get-catsrandom)
 
 ### POST /cat/register
 
