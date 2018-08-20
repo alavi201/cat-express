@@ -20,6 +20,12 @@ npm install
 ```
 npm start 
 ```
+   The server runs on port 8081 by default but that can be changed in bin/www. 
+   The port can also be set when running the project. For example, to run the project on port 1234, run the following command
+
+```
+PORT=1234 npm start
+```
 
 ## Resource components
 Major resource components supported by the API are:
