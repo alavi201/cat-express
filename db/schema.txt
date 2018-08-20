@@ -1,0 +1,16 @@
+DROP TABLE IF EXISTS `cat`;
+
+CREATE TABLE `cat` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `breed` varchar(45) DEFAULT NULL,
+  `weight` float NOT NULL,
+  `birthdate` date DEFAULT NULL,
+  `imageUrl` varchar(255) DEFAULT NULL,
+  `addedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastSeenAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username_UNIQUE` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
