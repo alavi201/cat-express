@@ -127,24 +127,81 @@ Example: http://example.com/cat/login
         }
 
 
-### POST /magazines/[id]/articles
+### GET /cats
+*  **Header**
 
-Example: Create – POST  http://example.gov/api/v1/magazines/[id]/articles
+   **Required:**
+    ` authToken: String`
+    
+*  **URL Params**
 
-Request body:
+   **Optional:**
+    `id=[integer]`
+    `name=[string]`
+    `username=[string]`
 
-    [
+Example: http://example.com/cat/login
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+      
+    Response body:
+
+        [
+          {
+            "id": 1,
+            "name": "cat1",
+            "username": "username@domain.com",
+            "breed": "siamese",
+            "weight": 1.5,
+            "birthdate": "2015-04-13T00:00:00.000Z",
+            "imageUrl": "https://abc.com",
+          },
+          {
+            "id": 2,
+            "name": "cat2",
+            "username": "username2@domain.com",
+            "breed": "persian",
+            "weight": 0.5,
+            "birthdate": null,
+            "imageUrl": null,
+          }
+        ]
+
+ 
+* **Error Response:**
+
+  * **Code:** 422 UNPROCESSABLE ENTRY <br />
+    
+    Response body:
+
         {
-            "title": "Raising Revenue",
-            "author_first_name": "Jane",
-            "author_last_name": "Smith",
-            "author_email": "jane.smith@example.gov",
-            "year": "2012",
-            "month": "August",
-            "day": "18",
-            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ante ut augue scelerisque ornare. Aliquam tempus rhoncus quam vel luctus. Sed scelerisque fermentum fringilla. Suspendisse tincidunt nisl a metus feugiat vitae vestibulum enim vulputate. Quisque vehicula dictum elit, vitae cursus libero auctor sed. Vestibulum fermentum elementum nunc. Proin aliquam erat in turpis vehicula sit amet tristique lorem blandit. Nam augue est, bibendum et ultrices non, interdum in est. Quisque gravida orci lobortis... "
+            "error": "Failed to authenticate."
         }
-    ]
+      OR
+
+  * **Code:** 400 BAD REQUEST <br />
+
+    Response body:
+
+
+        {
+            "error": "This token has expired, please get a new token by logging in."
+        }
+
+
+      OR
+
+  * **Code:** 400 BAD REQUEST <br />
+
+    Response body:
+
+
+        {
+            "error": "Invalid search criteria."
+        }
+
 
 
 
