@@ -18,7 +18,7 @@ router.post('/cat/register', [
   check('weight', 'Must be a number').isNumeric(),
   check('breed', 'Must contain only letters (a-zA-Z').optional().isAlpha(),
   check('imageUrl', 'Must be a valid URL').optional().isURL(),
-  check('birthdate', 'Must be in the format YYYY-MM-DD').optional().isISO8601().isLength({ min: 10, max: 10 })
+  check('birthdate', 'Must be a valid date in the format YYYY-MM-DD').optional().isISO8601().isLength({ min: 10, max: 10 })
 ], function(req, res, next) {
 
   const errors = validationResult(req);
