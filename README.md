@@ -24,6 +24,10 @@ npm start
 ## Resource components
 Major resource components supported by the API are:
 
+  - [POST /cat/register](#post-catregister)
+  - [POST /cat/login](#post-catlogin)
+  - [GET /cats](#get-cats)
+  - [POST /cats/random](#get-catsrandom)
 
 | resource      | description                       |
 |:--------------|:----------------------------------|
@@ -33,13 +37,6 @@ Major resource components supported by the API are:
 | `/cats/random`      | returns details for a random cat |
 
 ## Request & Response Examples
-
-### API Resources
-
-  - [POST /cat/register](#post-catregister)
-  - [POST /cat/login](#post-catlogin)
-  - [GET /cats](#get-cats)
-  - [POST /cats/random](#get-catsrandom)
 
 ### POST /cat/register
 
