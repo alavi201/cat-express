@@ -25,7 +25,7 @@ router.post('/cat/register', [
 
   //respond with an error if validation fails
   if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
+    return res.status(400).json({ errors: errors.array() });
   }
 
   var username = req.body.username;
@@ -59,7 +59,7 @@ router.post('/cat/register', [
         return res.sendStatus(201);
       });
     } else{
-      return res.status(200).json({"Error": "Username already exists. Please choose a different username."});
+      return res.status(400).json({"Error": "Username already exists. Please choose a different username."});
     }
   });
 });
@@ -87,10 +87,10 @@ router.post('/cat/login', function(req, res, next) {
         });
         return res.status(200).json({"authToken": token});
       } else{
-        return res.status(200).json({"Error": "Incorrect password."});
+        return res.status(400).json({"Error": "Incorrect password."});
       }
     } else{
-      return res.status(200).json({"Error": "Username not found."});
+      return res.status(400).json({"Error": "Username not found."});
     }
   });
 });
@@ -100,7 +100,7 @@ router.get('/cats', function(req, res, next) {
   var authToken = req.header('authToken');
   
   if (!authToken){
-    return res.status(401).json({"Error": "No token provided."});
+    return res.status(400).json({"Error": "No token provided."});
   };
 
   //verify authToken
@@ -135,7 +135,7 @@ router.get('/cats', function(req, res, next) {
       if(results.length > 0) {
         return res.status(200).json(results);
       } else{
-        return res.status(200).json({"Error": "Invalid search criteria"});
+        return res.status(400).json({"Error": "Invalid search criteria"});
       }
     });
   });
@@ -152,7 +152,7 @@ router.get('/cats/random', function(req, res, next) {
     if(results.length > 0) {
       return res.status(200).json(results);
     } else{
-      return res.status(200).json({"Error": "No records found."});
+      return res.status(400).json({"Error": "No records found."});
     }
   });
 });
