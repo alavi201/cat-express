@@ -14,13 +14,13 @@ router.get('/', function(req, res, next) {
 router.post('/cat/register', [
   // username must be an email
   check('username').isEmail(),
-  // password must be at least 5 chars long
-  check('password').isLength({ min: 8 }),
+  // password must be at least 8 chars long
+  check('password', 'Minimum length is 8').isLength({ min: 8 }),
   check('name').isAlpha(),
   check('weight').isNumeric(),
   check('breed').optional().isAlpha(),
   check('imageUrl').optional().isURL(),
-  check('birthdate').optional().isISO8601()
+  check('birthdate', 'Must be in the format YYYY-MM-DD').optional().isISO8601().isLength({ min: 10, max: 10 })
 ], function(req, res, next) {
 
   const errors = validationResult(req);
@@ -92,8 +92,7 @@ router.post('/cat/login', function(req, res, next) {
 router.get('/cats', function(req, res, next) {
 
   var authToken = req.header('authToken');
-  console.log(authToken);
-
+  
   if (!authToken){
     return res.status(401).json({"Error": "No token provided."});
   };
@@ -108,15 +107,15 @@ router.get('/cats', function(req, res, next) {
       return res.status(500).json({"Error": message});
     }
 
-    var sql = "SELECT id, username, name, birthdate, breed, imageUrl from cat ";
+    var sql = 'SELECT id, username, name, birthdate, breed, imageUrl from cat ';
     const existingParams = ["id", "name", "username"].filter(field => req.query[field]);
 
     if (existingParams.length) {
-        sql += " WHERE ";
-        sql += existingParams.map(field => `${field} = ?`).join(" AND ");
+        sql += ' WHERE ';
+        sql += existingParams.map(field => `${field} = ?`).join(' AND ');
     }
 
-    sql += " ORDER BY lastSeenAt";
+    sql += ' ORDER BY lastSeenAt';
 
     db.query(sql, existingParams.map(field => req.query[field]), function(err, results, query) {
       if (err){
