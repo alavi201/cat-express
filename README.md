@@ -63,11 +63,11 @@ Example: http://example.com/cat/register
 
 * **Success Response:**
 
-  * **Code:** 204 <br />
+  * **Code:** 201 <br />
  
 * **Error Response:**
 
-  * **Code:** 422 UNPROCESSABLE ENTRY <br />
+  * **Code:** 400 BAD REQUEST <br />
     
     Response body:
 
@@ -119,7 +119,7 @@ Example: http://example.com/cat/login
  
 * **Error Response:**
 
-  * **Code:** 422 UNPROCESSABLE ENTRY <br />
+  * **Code:** 400 BAD REQUEST <br />
     
     Response body:
 
@@ -184,7 +184,7 @@ Example: http://example.com/cat/login
  
 * **Error Response:**
 
-  * **Code:** 422 UNPROCESSABLE ENTRY <br />
+  * **Code:** 400 BAD REQUEST <br />
     
     Response body:
 
@@ -239,7 +239,7 @@ Example: http://example.com/cats/random
  
 * **Error Response:**
 
-  * **Code:** 404 UNPROCESSABLE ENTRY <br />
+  * **Code:** 400 BAD REQUEST <br />
     
     Response body:
 
