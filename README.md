@@ -57,31 +57,31 @@ Example: http://example.com/cat/register
 
   * **Code:** 422 UNPROCESSABLE ENTRY <br />
     
-Response body:
+    Response body:
 
-    {
-        "errors": [
-            {
-                "location": "body",
-                "param": "password",
-                "value": "1234",
-                "msg": "Minimum length is 8"
-            }
-        ]
-    }
+        {
+            "errors": [
+                {
+                    "location": "body",
+                    "param": "password",
+                    "value": "1234",
+                    "msg": "Minimum length is 8"
+                }
+            ]
+        }
 
 
 
-  OR
+      OR
 
   * **Code:** 400 BAD REQUEST <br />
-    
-Response body:
+
+    Response body:
 
 
-    {
-        "error": "Username already exists. Please choose a different username."
-    }
+        {
+            "error": "Username already exists. Please choose a different username."
+        }
 
 
 ### GET /magazines/[id]
