@@ -6,10 +6,19 @@ Sample Express App to store Cat data
 
 These instructions will get you a copy of the project up and running on your local machine.
 
-### Installing
+### Installing and Running
 
+1) Clone this repository locally on your machine
+
+2) To install the dependencies run the following command
 ```
 npm install
+```
+3) Rename the file config_sample.json to config.json and replace the values with your own for database connection and authToken secret.
+
+4) To start the application, run the following command 
+```
+npm start 
 ```
 
 ## Resource components
