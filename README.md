@@ -51,7 +51,7 @@ Example: http://example.com/cat/register
 
 * **Success Response:**
 
-  * **Code:** 200 <br />
+  * **Code:** 204 <br />
  
 * **Error Response:**
 
@@ -202,6 +202,38 @@ Example: http://example.com/cat/login
             "error": "Invalid search criteria."
         }
 
+### GET /cats/random
+
+Example: http://example.com/cats/random
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+      
+    Response body:
+
+        [
+          {
+            "id": 1,
+            "name": "cat1",
+            "username": "username@domain.com",
+            "breed": "siamese",
+            "weight": 1.5,
+            "birthdate": "2015-04-13T00:00:00.000Z",
+            "imageUrl": "https://abc.com",
+          }
+        ]
+
+ 
+* **Error Response:**
+
+  * **Code:** 404 UNPROCESSABLE ENTRY <br />
+    
+    Response body:
+
+        {
+            "error": "No records found.."
+        }
 
 
 
